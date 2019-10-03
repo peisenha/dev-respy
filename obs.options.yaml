@@ -1,0 +1,57 @@
+choices:
+  edu:
+    lagged:
+    - 1
+    max: 20
+    share:
+    - 1
+    start:
+    - 10
+core_state_space_filters:
+- period > 0 and exp_{i} == period and lagged_choice_1 != '{i}'
+- period > 0 and exp_a + exp_b + exp_edu == period and lagged_choice_1 == '{j}'
+- period > 0 and lagged_choice_1 == 'edu' and exp_edu == 0
+- lagged_choice_1 == '{k}' and exp_{k} == 0
+- period == 0 and lagged_choice_1 == '{k}'
+covariates:
+  any_exp_a: exp_a > 0
+  any_exp_b: exp_b > 0
+  at_least_ten_years_edu: exp_edu >= 10
+  co_graduate: exp_edu >= 16
+  constant: '1'
+  edu_lagged: lagged_choice_1 == 'edu'
+  exp_a_square: exp_a ** 2 / 100
+  exp_b_square: exp_b ** 2 / 100
+  hs_graduate: exp_edu >= 12
+  is_adult: 5 <= period
+  is_minor: period < 2
+  is_return_high_school: ~edu_lagged and hs_graduate
+  is_return_not_high_school: ~edu_lagged and ~hs_graduate
+  is_young_adult: 2 <= period <= 4
+  not_any_exp_a: exp_a == 0
+  not_any_exp_b: exp_b == 0
+  not_exp_a_lagged: exp_a > 0 and lagged_choice_1 != 'a'
+  not_exp_b_lagged: exp_b > 0 and lagged_choice_1 != 'b'
+  observable_0_0: observable_0 == 0
+  observable_0_1: observable_0 == 1
+  observable_0_2: observable_0 == 2
+  up_to_nine_years_edu: exp_edu <= 9
+  work_a_lagged: lagged_choice_1 == 'a'
+  work_b_lagged: lagged_choice_1 == 'b'
+edu_max: 15
+edu_share:
+- 1
+edu_start:
+- 7
+estimation_draws: 96
+estimation_seed: 9342
+estimation_tau: 322.9567126392502
+inadmissible_states: {}
+interpolation_points: -1
+n_lagged_choices: 1
+n_periods: 5
+observables: {}
+simulation_agents: 500
+simulation_seed: 948
+solution_draws: 80
+solution_seed: 4032
