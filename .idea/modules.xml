@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/dev-respy.iml" filepath="$PROJECT_DIR$/.idea/dev-respy.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../respy/.idea/respy.iml" filepath="$PROJECT_DIR$/../../respy/.idea/respy.iml" />
     </modules>
   </component>
 </project>
