@@ -10,4 +10,12 @@ solution_draws: 500
 solution_seed: 456
 covariates:
     constant: "1"
+    contemplation_with_friday: "exp_friday == 1 and exp_fishing >= 1"
     not_fishing_last_period: "lagged_choice_1 != 'fishing'"
+    missing_friday: "lagged_choice_1 != 'friday'"
+
+inadmissible_states:
+    friday: [
+        "period < 2",
+        "exp_fishing == 0"
+    ]

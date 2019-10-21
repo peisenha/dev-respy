@@ -2,24 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="badccca1-0db1-4910-a95b-bc49a6751d60" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/other.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/environment.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/question_tobias.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/respy" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/robinson-crusoe-canvas.ipynb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/robinson-crusoe.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/robinson-crusoe.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/sandbox.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.envrc" beforeDir="false" afterPath="$PROJECT_DIR$/.envrc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dev-respy.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dev-respy.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/respy/docs/getting_started/keane-and-wolpin-1994.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/respy/docs/getting_started/keane-and-wolpin-1994.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/respy/respy/conditional_draws.py" beforeDir="false" afterPath="$PROJECT_DIR$/respy/respy/conditional_draws.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/run.py" beforeDir="false" afterPath="$PROJECT_DIR$/run.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../respy/respy/conditional_draws.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../respy/respy/conditional_draws.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/question_tobias.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/question_tobias.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/respy/docs/index.rst" beforeDir="false" afterPath="$PROJECT_DIR$/respy/docs/index.rst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../respy/docs/index.rst" beforeDir="false" afterPath="$PROJECT_DIR$/../../respy/docs/index.rst" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -36,7 +22,7 @@
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../respy" />
+    <property name="last_opened_file_path" value="$USER_HOME$/office/administration/refereeing_services" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="restartRequiresConfirmation" value="false" />
@@ -147,7 +133,13 @@
       <workItem from="1571026458958" duration="882000" />
       <workItem from="1571048409322" duration="625000" />
       <workItem from="1571062763152" duration="23000" />
-      <workItem from="1571294916614" duration="15470000" />
+      <workItem from="1571294916614" duration="16132000" />
+      <workItem from="1571380194207" duration="2437000" />
+      <workItem from="1571383879492" duration="3023000" />
+      <workItem from="1571419696480" duration="5699000" />
+      <workItem from="1571470749056" duration="30000" />
+      <workItem from="1571632756631" duration="1055000" />
+      <workItem from="1571634168884" duration="1052000" />
     </task>
     <servers />
   </component>
@@ -172,7 +164,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/respy/respy/conditional_draws.py</url>
-          <line>136</line>
+          <line>121</line>
           <option name="timeStamp" value="13" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -187,22 +179,22 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/respy/respy/conditional_draws.py</url>
-          <line>66</line>
+          <line>68</line>
           <option name="timeStamp" value="16" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/respy/respy/conditional_draws.py</url>
-          <line>135</line>
+          <line>120</line>
           <option name="timeStamp" value="17" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/respy/respy/conditional_draws.py</url>
-          <line>75</line>
+          <line>76</line>
           <option name="timeStamp" value="18" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/respy/respy/conditional_draws.py</url>
-          <line>134</line>
+          <line>119</line>
           <option name="timeStamp" value="19" />
         </line-breakpoint>
       </breakpoints>
