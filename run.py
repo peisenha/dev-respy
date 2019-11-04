@@ -1,36 +1,19 @@
-from pathlib import Path
-import yaml
+import os
+# In this script we only have explicit use of MPI as our level of parallelism. This needs to be
+# done right at the beginning of the script.
+update = {'NUMBA_NUM_THREADS': '1', 'OMP_NUM_THREADS': '1', 'OPENBLAS_NUM_THREADS': '1',
+          'NUMEXPR_NUM_THREADS': '1', 'MKL_NUM_THREADS': '1'}
+os.environ.update(update)
 
-import pandas as pd
 import respy as rp
 import numpy as np
-#params = pd.read_csv("robinson-crusoe.csv")
-#options = yaml.safe_load(Path("robinson-crusoe.yaml").read_text())
-#simulate = rp.get_simulate_func(params, options)
-#df = simulate(params)
-np.random.seed(123)
-from respy.tests.random_model import generate_random_model
-params, options = generate_random_model()
 
-options["n_periods"] = 1
-options["simulation_agents"] = 1000
-
-params.loc["meas_error", :] = 0
-params.loc["shocks_sdcorr", "sd_b"] = 1
-
-
-params.to_pickle("params.respy.pkl")
-with open('options.respy.yml', 'w') as outfile:
-    yaml.dump(options, outfile, default_flow_style=False)
-
-params = pd.read_pickle("params.respy.pkl")
-options = yaml.load(open('options.respy.yml', 'r'))
-
-simulate = rp.get_simulate_func(params, options)
-df = simulate(params)
-
+params, options, df = rp.get_example_model("robinson", with_data=True)
 
 crit_func = rp.get_crit_func(params, options, df)
-crit_func(params)
 
-df.to_pickle("simulated.respy.pkl")
+for delta in [0.001, 0.5]:
+    print("\n\n")
+    params.loc[("shocks_sdcorr", "sd_hammock"), :] = delta
+    fval = crit_func(params)
+    print(delta, fval)

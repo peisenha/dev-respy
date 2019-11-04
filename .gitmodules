@@ -1,0 +1,3 @@
+[submodule "submodules/robupy"]
+	path = submodules/robupy
+	url = https://github.com/OpenSourceEconomics/robupy.git
