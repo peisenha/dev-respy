@@ -2,30 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="badccca1-0db1-4910-a95b-bc49a6751d60" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitmodules" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/update-repository" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/calibration-maximum-likelihood.ipynb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/configurations/ipython/profile_default/startup/start.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/configurations/jupyter/jupyter_notebook_config.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/configurations/matplotlibrc" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/robinson.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/robinson.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/update_repository.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/submodules/robupy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.envrc" beforeDir="false" afterPath="$PROJECT_DIR$/.envrc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dev-respy.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dev-respy.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bootstrap_robinson.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/calibration_maximum_likelihood.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev-calibration-maximum-likelihood.ipynb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/obs.options.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/obs.params.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/question_tobias.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/question_tobias.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/respy.mplstyle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/robinson-crusoe-canvas.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/robinson-crusoe.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/robinson-crusoe.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/robinson-crusoe.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/run.py" beforeDir="false" afterPath="$PROJECT_DIR$/run.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sandbox.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/sandbox.ipynb" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -35,7 +15,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/respy" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1RhhzlQShAz1q41bfthHbgVqTXD" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -43,7 +23,7 @@
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$USER_HOME$/structRobustness" />
+    <property name="last_opened_file_path" value="$USER_HOME$/OptionValue" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="restartRequiresConfirmation" value="false" />
@@ -174,7 +154,11 @@
       <workItem from="1572852188518" duration="6046000" />
       <workItem from="1572867110395" duration="1981000" />
       <workItem from="1572881014280" duration="644000" />
-      <workItem from="1572883883345" duration="2888000" />
+      <workItem from="1572883883345" duration="3489000" />
+      <workItem from="1572943810254" duration="717000" />
+      <workItem from="1573204910982" duration="12000" />
+      <workItem from="1573206000969" duration="1303000" />
+      <workItem from="1573494127231" duration="5997000" />
     </task>
     <servers />
   </component>
@@ -219,7 +203,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/respy/respy/simulate.py</url>
-          <line>249</line>
+          <line>256</line>
           <option name="timeStamp" value="11" />
         </line-breakpoint>
       </breakpoints>
