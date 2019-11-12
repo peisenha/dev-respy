@@ -2,9 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="badccca1-0db1-4910-a95b-bc49a6751d60" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/dictionaries/peisenha.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bootstrap.delta_perturb_false.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bootstrap.delta_perturb_true.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bootstrap.sd_hammock_perturb_false.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bootstrap.sd_hammock_perturb_true.pkl" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bootstrap_robinson.py" beforeDir="false" afterPath="$PROJECT_DIR$/bootstrap_robinson.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/calibration_maximum_likelihood.py" beforeDir="false" afterPath="$PROJECT_DIR$/calibration_maximum_likelihood.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dev-calibration-maximum-likelihood.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/dev-calibration-maximum-likelihood.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sandbox.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/sandbox.ipynb" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -156,7 +163,8 @@
       <workItem from="1572943810254" duration="717000" />
       <workItem from="1573204910982" duration="12000" />
       <workItem from="1573206000969" duration="1303000" />
-      <workItem from="1573494127231" duration="6993000" />
+      <workItem from="1573494127231" duration="8225000" />
+      <workItem from="1573544700384" duration="790000" />
     </task>
     <servers />
   </component>
