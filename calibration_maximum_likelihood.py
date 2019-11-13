@@ -8,6 +8,23 @@ from estimagic.optimization.optimize import maximize
 from pandas.core.common import SettingWithCopyWarning
 warnings.simplefilter(action="ignore", category=SettingWithCopyWarning)
 
+def get_bootstrap_sample(df, seed=None):
+    
+    np.random.seed(seed)
+    
+    # Create the bootstrap sample
+    identifiers = df["Identifier"].unique()
+    boot_ids = np.random.choice(identifiers, size=len(identifiers))
+
+    agents = list()
+    for i, id_ in enumerate(boot_ids):
+        agent = df[df["Identifier"] == id_]
+        agent.loc[slice(None), "Identifier"] = i
+        agents.append(agent)
+    boot_df = pd.concat(agents)
+    
+    return boot_df
+
 
 def run_bootstrap(df, params, options, constr, num_boots, is_perturb=False):
 
@@ -17,16 +34,8 @@ def run_bootstrap(df, params, options, constr, num_boots, is_perturb=False):
     for iter_ in range(num_boots):
 
         np.random.seed(iter_)
-
-        # Create the bootstrap sample
-        boot_ids = np.random.choice(identifiers, size=len(identifiers))
-
-        agents = list()
-        for i, id_ in enumerate(boot_ids):
-            agent = df[df["Identifier"] == id_]
-            agent.loc[slice(None), "Identifier"] = i
-            agents.append(agent)
-        boot_df = pd.concat(agents)
+        
+        boot_df = get_bootstrap_sample(df, seed=iter_)
 
         # Set up starting values
         params_start = params.copy()
