@@ -5,8 +5,8 @@ import pickle as pkl
 import respy as rp
 import numpy as np
 
-NUM_SIMULATIONS = 10
-NUM_DRAWS = 2
+NUM_SIMULATIONS = 10000
+NUM_DRAWS = 100
 
 EPS = np.sqrt(np.finfo(float).eps)
 
@@ -51,4 +51,4 @@ for index in indices:
 
         rslt.append(fd)
 
-        pkl.dump(rslt, open(f"score.{index[1]}.pkl", "wb"))
+    pkl.dump(rslt, open(f"score.{index[1]}.pkl", "wb"))
