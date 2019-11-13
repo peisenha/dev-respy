@@ -2,15 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="badccca1-0db1-4910-a95b-bc49a6751d60" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/score_robinson.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bootstrap.delta_perturb_false.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/bootstrap.delta_perturb_false.pkl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bootstrap.delta_perturb_true.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/bootstrap.delta_perturb_true.pkl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bootstrap.sd_hammock_perturb_false.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/bootstrap.sd_hammock_perturb_false.pkl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bootstrap.sd_hammock_perturb_true.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/bootstrap.sd_hammock_perturb_true.pkl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/calibration_maximum_likelihood.py" beforeDir="false" afterPath="$PROJECT_DIR$/calibration_maximum_likelihood.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dev-calibration-maximum-likelihood.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/dev-calibration-maximum-likelihood.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sandbox.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/sandbox.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/score.delta.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/score.delta.pkl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/score.exp_fishing.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/score.exp_fishing.pkl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/score_robinson.py" beforeDir="false" afterPath="$PROJECT_DIR$/score_robinson.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -165,7 +161,7 @@
       <workItem from="1573494127231" duration="8225000" />
       <workItem from="1573544700384" duration="1015000" />
       <workItem from="1573632332895" duration="158000" />
-      <workItem from="1573642630121" duration="609000" />
+      <workItem from="1573642630121" duration="3918000" />
     </task>
     <servers />
   </component>

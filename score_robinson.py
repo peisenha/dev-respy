@@ -5,8 +5,10 @@ import pickle as pkl
 import respy as rp
 import numpy as np
 
+
+INDICES = [("delta", "delta")]
 NUM_SIMULATIONS = 10000
-NUM_DRAWS = 100
+NUM_DRAWS = 1000
 
 EPS = np.sqrt(np.finfo(float).eps)
 
@@ -30,9 +32,9 @@ def wrapper_crit_func(crit_func, params_base, index, values):
 
 params_base, options_base, df = rp.get_example_model("robinson", with_data=True)
 
-indices = [("wage_fishing", "exp_fishing"), ("delta", "delta")]
 
-for index in indices:
+for index in INDICES:
+
     rslt = list()
     for iter_ in range(NUM_DRAWS):
 
