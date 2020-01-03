@@ -27,6 +27,7 @@ dependencies:
   - sphinx-autobuild
   - tox-conda
   - seaborn
+  - chaospy
   - pip:
     - apprise
     - pre-commit
