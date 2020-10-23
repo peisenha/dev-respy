@@ -2,14 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="badccca1-0db1-4910-a95b-bc49a6751d60" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/peisenha.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/peisenha.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/auxiliary.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dev-respy.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dev-respy.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/configurations/ipython/profile_default/startup/start.py" beforeDir="false" afterPath="$PROJECT_DIR$/configurations/ipython/profile_default/startup/start.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/configurations/jupyter/jupyter_notebook_config.py" beforeDir="false" afterPath="$PROJECT_DIR$/configurations/jupyter/jupyter_notebook_config.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/extend_occupations.py" beforeDir="false" afterPath="$PROJECT_DIR$/extend_occupations.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/run.py" beforeDir="false" afterPath="$PROJECT_DIR$/run.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sandbox.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/sandbox.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/update_repository.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/update_repository.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -168,7 +166,7 @@
       <workItem from="1573642630121" duration="3918000" />
       <workItem from="1574070624648" duration="28000" />
       <workItem from="1578036585574" duration="5435000" />
-      <workItem from="1603457585799" duration="4063000" />
+      <workItem from="1603457585799" duration="8350000" />
     </task>
     <servers />
   </component>

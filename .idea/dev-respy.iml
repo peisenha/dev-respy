@@ -5,7 +5,7 @@
       <sourceFolder url="file://$MODULE_DIR$/respy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/submodules/robupy" isTestSource="false" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.6 (dev_respy)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.6" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="respy" />
     <orderEntry type="module" module-name="respy" />
