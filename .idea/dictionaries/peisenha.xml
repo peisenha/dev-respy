@@ -2,6 +2,7 @@
   <dictionary name="peisenha">
     <words>
       <w>fname</w>
+      <w>sdcorr</w>
     </words>
   </dictionary>
 </component>

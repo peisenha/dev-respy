@@ -2,8 +2,13 @@ import os
 
 # In this script we only have explicit use of MPI as our level of parallelism. This needs to be
 # done right at the beginning of the script.
-update = {'NUMBA_NUM_THREADS': '1', 'OMP_NUM_THREADS': '1', 'OPENBLAS_NUM_THREADS': '1',
-          'NUMEXPR_NUM_THREADS': '1', 'MKL_NUM_THREADS': '1'}
+update = {
+    "NUMBA_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "NUMEXPR_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+}
 os.environ.update(update)
 
 import respy as rp
