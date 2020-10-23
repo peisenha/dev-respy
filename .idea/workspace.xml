@@ -2,23 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="badccca1-0db1-4910-a95b-bc49a6751d60" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/extend_occupations.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bootstrap.delta_perturb_false.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bootstrap.delta_perturb_true.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bootstrap.sd_hammock_perturb_false.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bootstrap.sd_hammock_perturb_true.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bootstrap_robinson.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/calibration_maximum_likelihood.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev-calibration-maximum-likelihood.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/environment.yml" beforeDir="false" afterPath="$PROJECT_DIR$/environment.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/respy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/run.py" beforeDir="false" afterPath="$PROJECT_DIR$/run.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kw-94-extend-occupations.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/kw-94-extend-occupations.ipynb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sandbox.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/sandbox.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/score.delta.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/score.exp_fishing.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/score_robinson.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../respy/docs/getting_started/keane-and-wolpin-1994.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/../../respy/docs/getting_started/keane-and-wolpin-1994.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../respy/docs/getting_started/keane-and-wolpin-1997.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/../../respy/docs/getting_started/keane-and-wolpin-1997.ipynb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,22 +13,22 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../respy" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="JupyterTrust" id="ef6fa446-0bcc-4997-a67d-44d245c7176d" />
+  <component name="JupyterTrust" id="6aa58097-ef63-4fbe-8433-a797eae3e2b3" />
   <component name="ProjectId" id="1RhhzlQShAz1q41bfthHbgVqTXD" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="showExcludedFiles" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../respy-lectures" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="restartRequiresConfirmation" value="false" />
@@ -121,18 +108,7 @@
       </list>
     </recent_temporary>
   </component>
-  <component name="ServiceViewManager">
-    <option name="viewStates">
-      <list>
-        <serviceView>
-          <treeState>
-            <expand />
-            <select />
-          </treeState>
-        </serviceView>
-      </list>
-    </option>
-  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="project-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -182,24 +158,24 @@
       <workItem from="1573642630121" duration="3918000" />
       <workItem from="1574070624648" duration="28000" />
       <workItem from="1578036585574" duration="5435000" />
+      <workItem from="1603457585799" duration="194000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="1" />
+    <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>
         <entry key="MAIN">
           <value>
-            <State>
-              <option name="COLUMN_ORDER" />
-            </State>
+            <State />
           </value>
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
     <state width="1807" height="347" key="GridCell.Tab.0.bottom" timestamp="1578042557453">
@@ -239,7 +215,7 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/../../respy/respy/conditional_draws.py</url>
+          <url>file://$PROJECT_DIR$/../respy/conditional_draws.py</url>
           <line>79</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
@@ -249,7 +225,7 @@
           <option name="timeStamp" value="2" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/../../respy/respy/likelihood.py</url>
+          <url>file://$PROJECT_DIR$/../respy/likelihood.py</url>
           <line>194</line>
           <option name="timeStamp" value="4" />
         </line-breakpoint>
@@ -264,7 +240,7 @@
           <option name="timeStamp" value="11" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/../../respy/respy/pre_processing/data_checking.py</url>
+          <url>file://$PROJECT_DIR$/../respy/pre_processing/data_checking.py</url>
           <line>60</line>
           <option name="timeStamp" value="12" />
         </line-breakpoint>
@@ -273,7 +249,7 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/dev_respy$run.coverage" NAME="run Coverage Results" MODIFIED="1578041316118" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/dev_respy$conditional_draws.coverage" NAME="conditional_draws Coverage Results" MODIFIED="1571299448196" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/respy/respy" />
     <SUITE FILE_PATH="coverage/dev_respy$state_space.coverage" NAME="state_space Coverage Results" MODIFIED="1571297941838" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/respy/respy" />
+    <SUITE FILE_PATH="coverage/dev_respy$conditional_draws.coverage" NAME="conditional_draws Coverage Results" MODIFIED="1571299448196" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/respy/respy" />
   </component>
 </project>
