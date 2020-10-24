@@ -14,12 +14,7 @@ NUM_OCCUPATIONS = 3
 assert NUM_OCCUPATIONS > 0
 
 params_occ = add_generic_occupations(params, NUM_OCCUPATIONS)
-
-params_occ.drop("shocks_sdcorr", level="category", inplace=True)
-shocks_sdcorr = construct_shocks_sdcorr(params_occ)
-params_occ = params_occ.append(shocks_sdcorr)
-
-params_occ["value"] = params_occ["value"].astype("float")
+params_occ = construct_shocks_sdcorr(params_occ)
 
 # TODO: We are now working on options part based on the revised params.
 options["n_periods"] = 10
@@ -36,22 +31,16 @@ options["core_state_space_filters"] = [
 
 entries_to_remove = list()
 for key_ in options["covariates"].keys():
-    if "exp_" in key_:
+    if key_.startswith("exp_"):
         entries_to_remove.append(key_)
 
-print(entries_to_remove)
-# for key_ in entries_to_remove:
-#     options["covariates"].pop(key_, None)
-#
-# _, occupations = _get_choices_occupations(params_occ)
-#
-# for occupation in occupations:
-#     options["covariates"][f"exp_{occupation}_square"] = f"exp_{occupation} ** 2"
-#
-# print(options)
+for key_ in entries_to_remove:
+    options["covariates"].pop(key_, None)
 
-options["covariates"]["exp_c_square"] = "exp_c ** 2"
+_, occupations = _get_choices_occupations(params_occ)
 
+for occupation in occupations:
+    options["covariates"][f"exp_{occupation}_square"] = f"exp_{occupation} ** 2"
 
 simulate = rp.get_simulate_func(params_occ, options)
 df = simulate(params_occ)

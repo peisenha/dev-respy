@@ -67,8 +67,12 @@ def add_generic_occupations(params, NUM_OCCUPATIONS):
     return params_occ
 
 
-def construct_shocks_sdcorr(params):
-    choices, _ = _get_choices_occupations(params)
+def construct_shocks_sdcorr(params_occ):
+
+    params_occ.drop("shocks_sdcorr", level="category", inplace=True)
+
+
+    choices, _ = _get_choices_occupations(params_occ)
     # TODO: I do not know if this is flexible enough. This ensures ordering in CORR matrix.
     choices.sort()
 
@@ -101,5 +105,8 @@ def construct_shocks_sdcorr(params):
         else:
             raise AssertionError
 
-    return shocks_sdcorr
+    params_occ = params_occ.append(shocks_sdcorr)
+    params_occ["value"] = params_occ["value"].astype("float")
+
+    return params_occ
 
