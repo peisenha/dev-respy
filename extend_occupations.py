@@ -33,20 +33,22 @@ options["core_state_space_filters"] = [
 ]
 
 
-entries_to_remove = list()
-for key_ in options["covariates"].keys():
-    if "exp_" in key_:
-        entries_to_remove.append(key_)
+options["covariates"]["exp_c_square"] = "exp_c ** 2"
 
-for key_ in entries_to_remove:
-    options["covariates"].pop(key_, None)
-
-_, occupations = _get_choices_occupations(params)
-
-for occupation in occupations:
-    options["covariates"][f"exp_{occupation}_square"] = f"exp_{occupation} ** 2"
-
-
+# entries_to_remove = list()
+# for key_ in options["covariates"].keys():
+#     if "exp_" in key_:
+#         entries_to_remove.append(key_)
+#
+# for key_ in entries_to_remove:
+#     options["covariates"].pop(key_, None)
+#
+# _, occupations = _get_choices_occupations(params_occ)
+#
+# for occupation in occupations:
+#     options["covariates"][f"exp_{occupation}_square"] = f"exp_{occupation} ** 2"
+#
+# print(options)
 
 simulate = rp.get_simulate_func(params_occ, options)
 df = simulate(params_occ)
