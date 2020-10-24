@@ -6,9 +6,31 @@ import string
 
 def update_model_specification(params, options, num_occupations):
     params_occ = update_params(params, num_occupations)
+    _, occupations = _get_choices_occupations(params_occ)
+
+    if "meas_error" in params.index.get_level_values("category"):
+        _, occupations_base = _get_choices_occupations(params)
+
+        meas_base = params.loc["meas_error"].loc[f"sd_{occupations_base[0]}", :].copy()
+        params_occ.drop("meas_error", level="category", inplace=True)
+
+        # TODO: Remove hard-coded number
+        # TODO: Types as hard-coded number
+        # TODO: Removes any experience as well?
+        for occupation in occupations:
+            info = {
+                "category": ["meas_error"],
+                "name": [f"sd_{occupation}"],
+                "value": [1.0],
+                "comment": ["comment"],
+            }
+            meas_error = pd.DataFrame.from_dict(info).set_index(["category", "name"])
+            params_occ = params_occ.append(meas_error)
+
     options_occ = update_options(options, params_occ)
 
     return params_occ, options_occ
+
 
 def update_params(params, num_occupations):
     params_occ = add_generic_occupations(params, num_occupations)
@@ -42,8 +64,14 @@ def update_options(options, params_occ):
     for occupation in occupations:
         substring += f"exp_{occupation} + "
 
+    # There is a different naming between the models.
+
     substring = substring[:substring.rfind("+") - 1]
-    substring = f"period > 0 and {substring} + exp_edu == period "
+    if "exp_edu" in params_occ.index.get_level_values("name"):
+        substring = f"period > 0 and {substring} + exp_edu == period "
+    else:
+        substring = f"period > 0 and {substring} + exp_school == period "
+
     substring += "and lagged_choice_1 == '{choices_wo_exp}'"
 
     try:
@@ -80,12 +108,19 @@ def add_generic_occupations(params, num_occupations):
     for occupation in occupations:
         params_debug.drop(f"wage_{occupation}", level="category", inplace=True)
 
+        # In some models there is also a non-pecuniary component to occupations.
+        nonpec_label = f"nonpec_{occupation}"
+        if nonpec_label in params_debug.index.get_level_values("category"):
+            params_debug.drop(nonpec_label, level="category", inplace=True)
+
     # We now create a generic new occupation
     occ_base = pd.concat([occ_base], keys=["wage_a"], names=["category"])
 
     # We need to drop all experience terms that refer to other occupations
     for label in occ_base.index.get_level_values(level="name"):
-        if "exp_" in label and "edu" not in label:
+        if "exp_" in label:
+            if "edu" in label or "school" in label:
+                continue
             occ_base.drop(label, level="name", inplace=True)
 
     # We now create new experience variables.
@@ -118,15 +153,19 @@ def construct_shocks_sdcorr(params_occ):
 
     params_occ.drop("shocks_sdcorr", level="category", inplace=True)
 
-    choices, _ = _get_choices_occupations(params_occ)
-    # TODO: I do not know if this is flexible enough. This ensures ordering in CORR matrix.
-    choices.sort()
+    choices, occupations = _get_choices_occupations(params_occ)
+
+    choices_order = occupations
+    for choice in choices:
+        if choice in choices_order:
+            continue
+        choices_order.append(choice)
 
     num_choices = len(choices)
     cov = np.tile("a" * 20, (num_choices, num_choices))
 
-    for i, row in enumerate(choices):
-        for j, column in enumerate(choices):
+    for i, row in enumerate(choices_order):
+        for j, column in enumerate(choices_order):
             if row == column:
                 cov[i, j] = f"sd_{row}"
             else:

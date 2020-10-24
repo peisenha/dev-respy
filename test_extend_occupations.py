@@ -24,11 +24,11 @@ def test_2():
 
     n_periods = 3
 
-    for model in ["kw_97_basic", "kw_97_extended", "kw_94_one"]:
+    for model in ["kw_97_basic", "kw_94_one"]:
 
         params, options, data = rp.get_example_model(model)
 
-        for num_occupations in range(1, 5):
+        for num_occupations in range(1, 6):
             params_occ, options_occ = update_model_specification(params, options, num_occupations)
 
             choices = _get_choices_occupations(params_occ)[0]
@@ -39,3 +39,8 @@ def test_2():
             simulate(params_occ)
 
             np.testing.assert_equal(num_occupations + 2, len(choices))
+
+def test_3():
+    """Test that renaming does not affect rsult ,so if the num_occupation is same as in original
+    then state space stuff should be very similar."""
+    pass
