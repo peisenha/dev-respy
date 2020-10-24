@@ -15,9 +15,9 @@ assert NUM_OCCUPATIONS > 0
 
 params_occ = add_generic_occupations(params, NUM_OCCUPATIONS)
 
-shocks_sdcorr = construct_shocks_sdcorr()
+params_occ.drop("shocks_sdcorr", level="category", inplace=True)
+shocks_sdcorr = construct_shocks_sdcorr(params_occ)
 params_occ = params_occ.append(shocks_sdcorr)
-
 
 options["core_state_space_filters"] = [
     "period > 0 and exp_{choices_w_exp} == period and lagged_choice_1 != '{choices_w_exp}'",

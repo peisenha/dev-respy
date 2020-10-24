@@ -4,15 +4,34 @@ import numpy as np
 import string
 
 
+def _get_choices_occupations(params):
+    choices, occupations = list(), list()
+    for candidate in params.index.get_level_values("category"):
+        if "wage" not in candidate and "nonpec" not in candidate:
+            continue
+
+        choice = candidate.split("_")[1:][0]
+        if "wage" in candidate and choice not in occupations:
+            occupations.append(choice)
+
+        if choice in choices:
+            continue
+
+        choices.append(choice)
+
+    return choices, occupations
+
+
 def add_generic_occupations(params, NUM_OCCUPATIONS):
     letters = string.ascii_lowercase[:NUM_OCCUPATIONS]
     params_debug = params.copy()
 
     occ_base = params_debug.loc["wage_a", :].copy()
 
-    params_debug.drop("shocks_sdcorr", level="category", inplace=True)
-    params_debug.drop("wage_b", level="category", inplace=True)
-    params_debug.drop("wage_a", level="category", inplace=True)
+    # We remove all existing occupations.
+    _, occupations = _get_choices_occupations(params)
+    for occupation in occupations:
+        params_debug.drop(f"wage_{occupation}", level="category", inplace=True)
 
     # We now create a generic new occupation
     occ_base = pd.concat([occ_base], keys=["wage_a"], names=["category"])
@@ -48,9 +67,12 @@ def add_generic_occupations(params, NUM_OCCUPATIONS):
     return params_occ
 
 
-def construct_shocks_sdcorr():
+def construct_shocks_sdcorr(params):
+    choices, _ = _get_choices_occupations(params)
+    # TODO: I do not know if this is flexible enough. This ensures ordering in CORR matrix.
+    choices.sort()
 
-    choices = ["a", "b", "c", "edu", "home"]
+
     num_choices = len(choices)
     cov = np.tile("a" * 20, (num_choices, num_choices))
 
