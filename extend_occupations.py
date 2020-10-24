@@ -4,7 +4,7 @@ import respy as rp
 # TODO: nonpecs need to be dealt with ..
 from auxiliary import add_generic_occupations
 from auxiliary import construct_shocks_sdcorr
-
+from auxiliary import _get_choices_occupations
 params, options, data = rp.get_example_model("kw_94_two")
 
 
@@ -19,6 +19,11 @@ params_occ.drop("shocks_sdcorr", level="category", inplace=True)
 shocks_sdcorr = construct_shocks_sdcorr(params_occ)
 params_occ = params_occ.append(shocks_sdcorr)
 
+params_occ["value"] = params_occ["value"].astype("float")
+
+# TODO: We are now working on options part based on the revised params.
+options["n_periods"] = 10
+
 options["core_state_space_filters"] = [
     "period > 0 and exp_{choices_w_exp} == period and lagged_choice_1 != '{choices_w_exp}'",
     "period > 0 and exp_a + exp_b + exp_c + exp_edu == period and lagged_choice_1 == '{choices_wo_exp}'",
@@ -27,11 +32,21 @@ options["core_state_space_filters"] = [
     "period == 0 and lagged_choice_1 == '{choices_w_wage}'",
 ]
 
-options["n_periods"] = 10
-options["covariates"]["exp_c_square"] = "exp_c ** 2"
 
-params_occ["value"] = params_occ["value"].astype("float")
-params_occ.to_pickle("params_occ.pkl")
+entries_to_remove = list()
+for key_ in options["covariates"].keys():
+    if "exp_" in key_:
+        entries_to_remove.append(key_)
+
+for key_ in entries_to_remove:
+    options["covariates"].pop(key_, None)
+
+_, occupations = _get_choices_occupations(params)
+
+for occupation in occupations:
+    options["covariates"][f"exp_{occupation}_square"] = f"exp_{occupation} ** 2"
+
+
 
 simulate = rp.get_simulate_func(params_occ, options)
 df = simulate(params_occ)

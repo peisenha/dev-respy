@@ -72,7 +72,6 @@ def construct_shocks_sdcorr(params):
     # TODO: I do not know if this is flexible enough. This ensures ordering in CORR matrix.
     choices.sort()
 
-
     num_choices = len(choices)
     cov = np.tile("a" * 20, (num_choices, num_choices))
 
