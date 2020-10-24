@@ -4,6 +4,19 @@ import numpy as np
 import string
 
 
+def update_model_specification(params, options, num_occupations):
+    params_occ = update_params(params, num_occupations)
+    options_occ = update_options(options, params_occ)
+
+    return params_occ, options_occ
+
+def update_params(params, num_occupations):
+    params_occ = add_generic_occupations(params, num_occupations)
+    params_occ = construct_shocks_sdcorr(params_occ)
+
+    return params_occ
+
+
 def _get_choices_occupations(params):
     choices, occupations = list(), list()
     for candidate in params.index.get_level_values("category"):
@@ -20,6 +33,36 @@ def _get_choices_occupations(params):
         choices.append(choice)
 
     return choices, occupations
+
+
+def update_options(options, params_occ):
+    # TODO: Updating filters ...
+    _, occupations = _get_choices_occupations(params_occ)
+    substring = ""
+    for occupation in occupations:
+        substring += f"exp_{occupation} + "
+
+    substring = substring[:substring.rfind("+") - 1]
+    substring = f"period > 0 and {substring} + exp_edu == period "
+    substring += "and lagged_choice_1 == '{choices_wo_exp}'"
+
+    options["core_state_space_filters"][1] = substring
+
+    # TODO: Updating covariates ...
+    entries_to_remove = list()
+    for key_ in options["covariates"].keys():
+        if key_.startswith("exp_"):
+            entries_to_remove.append(key_)
+
+    for key_ in entries_to_remove:
+        options["covariates"].pop(key_, None)
+
+    choices, occupations = _get_choices_occupations(params_occ)
+
+    for occupation in occupations:
+        options["covariates"][f"exp_{occupation}_square"] = f"exp_{occupation} ** 2"
+
+    return options
 
 
 def add_generic_occupations(params, NUM_OCCUPATIONS):
