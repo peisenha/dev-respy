@@ -23,7 +23,7 @@ def _get_choices_occupations(params):
         if "wage" not in candidate and "nonpec" not in candidate:
             continue
 
-        choice = candidate.split("_")[1:][0]
+        choice = candidate.split('_', 1)[1]
         if "wage" in candidate and choice not in occupations:
             occupations.append(choice)
 
@@ -46,7 +46,10 @@ def update_options(options, params_occ):
     substring = f"period > 0 and {substring} + exp_edu == period "
     substring += "and lagged_choice_1 == '{choices_wo_exp}'"
 
-    options["core_state_space_filters"][1] = substring
+    try:
+        options["core_state_space_filters"][1] = substring
+    except KeyError:
+        pass
 
     # TODO: Updating covariates ...
     entries_to_remove = list()
@@ -65,11 +68,12 @@ def update_options(options, params_occ):
     return options
 
 
-def add_generic_occupations(params, NUM_OCCUPATIONS):
-    letters = string.ascii_lowercase[:NUM_OCCUPATIONS]
+def add_generic_occupations(params, num_occupations):
+    letters = string.ascii_lowercase[:num_occupations]
     params_debug = params.copy()
 
-    occ_base = params_debug.loc["wage_a", :].copy()
+    _, occupations = _get_choices_occupations(params)
+    occ_base = params_debug.loc[f"wage_{occupations[0]}", :].copy()
 
     # We remove all existing occupations.
     _, occupations = _get_choices_occupations(params)
@@ -113,7 +117,6 @@ def add_generic_occupations(params, NUM_OCCUPATIONS):
 def construct_shocks_sdcorr(params_occ):
 
     params_occ.drop("shocks_sdcorr", level="category", inplace=True)
-
 
     choices, _ = _get_choices_occupations(params_occ)
     # TODO: I do not know if this is flexible enough. This ensures ordering in CORR matrix.

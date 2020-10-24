@@ -22,17 +22,20 @@ def test_1():
 
 def test_2():
 
-    params, options, data = rp.get_example_model("kw_94_two")
+    n_periods = 3
 
-    for num_occupations in range(1, 5):
-        n_periods = 3
-        params_occ, options_occ = update_model_specification(params, options, num_occupations)
+    for model in ["kw_97_basic", "kw_97_extended", "kw_94_one"]:
 
-        choices, _ = _get_choices_occupations(params_occ)
+        params, options, data = rp.get_example_model(model)
 
-        options["n_periods"] = n_periods
+        for num_occupations in range(1, 5):
+            params_occ, options_occ = update_model_specification(params, options, num_occupations)
 
-        simulate = rp.get_simulate_func(params_occ, options)
-        simulate(params_occ)
+            choices = _get_choices_occupations(params_occ)[0]
 
-        np.testing.assert_equal(num_occupations + 2, len(choices))
+            options["n_periods"] = n_periods
+
+            simulate = rp.get_simulate_func(params_occ, options)
+            simulate(params_occ)
+
+            np.testing.assert_equal(num_occupations + 2, len(choices))
