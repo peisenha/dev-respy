@@ -6,12 +6,23 @@ import string
 
 def update_model_specification(params, options, num_occupations):
     params_occ = update_params(params, num_occupations)
+    options_occ = update_options(options, params_occ)
+    return params_occ, options_occ
+
+
+def update_params(params, num_occupations):
+    params_occ = add_generic_occupations(params, num_occupations)
+    params_occ = construct_shocks_sdcorr(params_occ)
+    params_occ = construct_meas_error(params_occ)
+    return params_occ
+
+
+def construct_meas_error(params_occ):
     _, occupations = _get_choices_occupations(params_occ)
 
-    if "meas_error" in params.index.get_level_values("category"):
-        _, occupations_base = _get_choices_occupations(params)
+    if "meas_error" in params_occ.index.get_level_values("category"):
+        _, occupations = _get_choices_occupations(params_occ)
 
-        meas_base = params.loc["meas_error"].loc[f"sd_{occupations_base[0]}", :].copy()
         params_occ.drop("meas_error", level="category", inplace=True)
 
         # TODO: Remove hard-coded number
@@ -26,15 +37,6 @@ def update_model_specification(params, options, num_occupations):
             }
             meas_error = pd.DataFrame.from_dict(info).set_index(["category", "name"])
             params_occ = params_occ.append(meas_error)
-
-    options_occ = update_options(options, params_occ)
-
-    return params_occ, options_occ
-
-
-def update_params(params, num_occupations):
-    params_occ = add_generic_occupations(params, num_occupations)
-    params_occ = construct_shocks_sdcorr(params_occ)
 
     return params_occ
 
@@ -101,52 +103,40 @@ def add_generic_occupations(params, num_occupations):
     params_debug = params.copy()
 
     _, occupations = _get_choices_occupations(params)
-    occ_base = params_debug.loc[f"wage_{occupations[0]}", :].copy()
 
-    # We remove all existing occupations.
-    _, occupations = _get_choices_occupations(params)
-    for occupation in occupations:
-        params_debug.drop(f"wage_{occupation}", level="category", inplace=True)
+    model = "kw_94"
+    if "military" in occupations:
+        model = "kw_97"
 
-        # In some models there is also a non-pecuniary component to occupations.
-        nonpec_label = f"nonpec_{occupation}"
-        if nonpec_label in params_debug.index.get_level_values("category"):
-            params_debug.drop(nonpec_label, level="category", inplace=True)
+    occ_grid = pd.read_pickle(f"occ_grid_{model}.pkl")
 
-    # We now create a generic new occupation
-    occ_base = pd.concat([occ_base], keys=["wage_a"], names=["category"])
-
-    # We need to drop all experience terms that refer to other occupations
-    for label in occ_base.index.get_level_values(level="name"):
-        if "exp_" in label:
-            if "edu" in label or "school" in label:
-                continue
-            occ_base.drop(label, level="name", inplace=True)
-
-    # We now create new experience variables.
+    # TODO: Need to add mode complex grid and nonceps.
     for letter in letters:
-        for ext_ in ["", "_square"]:
-            name = f"exp_{letter}" + ext_
-            info = {
-                "category": ["wage_a"],
-                "name": [name],
-                "value": [0.0],
-                "comment": ["comment"],
-            }
+        occ_add = occ_grid.copy()
+        occ_add.reset_index(inplace=True)
+        occ_add.loc[:, "category"] = f"wage_{letter}{letter}"
+        occ_add.set_index(["category", "name"], inplace=True)
+        params_debug = params_debug.append(occ_add)
 
-            info = pd.DataFrame.from_dict(info).set_index(["category", "name"])
-            occ_base = occ_base.append(info)
+    _, occupations_update = _get_choices_occupations(params_debug)
 
-    # We now add it to the params dataframe
     for letter in letters:
-        occ_params = occ_base.loc["wage_a", :].copy()
-        occ_params = pd.concat([occ_params], keys=[f"wage_{letter}"], names=["category"])
+        for occupation in occupations_update:
+            for ext_ in ["", "_square"]:
 
-        params_debug = params_debug.append(occ_params)
+                name = f"exp_{letter}{letter}" + ext_
+                info = {
+                     "category": [f"wage_{occupation}"],
+                     "name": [name],
+                     "value": [0.0],
+                     "comment": ["comment"],
+                }
+                info = pd.DataFrame.from_dict(info).set_index(["category", "name"])
+                params_debug = params_debug.append(info)
 
-    params_occ = params_debug.copy()
+    params_debug = params_debug.sort_index()
 
-    return params_occ
+    return params_debug
 
 
 def construct_shocks_sdcorr(params_occ):
@@ -159,10 +149,21 @@ def construct_shocks_sdcorr(params_occ):
     for choice in choices:
         if choice in choices_order:
             continue
+        if choice in ["school", "home", "edu"]:
+            continue
+
         choices_order.append(choice)
 
+    if "military" in occupations:
+        choices_order.append("school")
+    else:
+        choices_order.append("edu")
+
+    choices_order.append("home")
+
+    print(choices_order)
     num_choices = len(choices)
-    cov = np.tile("a" * 20, (num_choices, num_choices))
+    cov = np.tile("a" * 30, (num_choices, num_choices))
 
     for i, row in enumerate(choices_order):
         for j, column in enumerate(choices_order):
