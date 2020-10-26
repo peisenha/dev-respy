@@ -149,7 +149,7 @@ def add_generic_occupations(params, num_occupations):
 
 def check_is_kw_97(**kwargs):
     if "params" in kwargs:
-        occupations = _get_choices_occupations(kwargs["params"])[1]
+        _, occupations = _get_choices_occupations(kwargs["params"])
         if "military" in occupations:
             return True
         else:
@@ -161,9 +161,7 @@ def check_is_kw_97(**kwargs):
             return False
 
 
-def _construct_sdcorr_indices(choices, occupations):
-
-
+def _construct_sdcorr_indices(occupations):
 
     # We need to ensure a particular order in the entries to shock matrix.
     choices_order = occupations
@@ -171,7 +169,6 @@ def _construct_sdcorr_indices(choices, occupations):
         choices_order += ["school", "home"]
     else:
         choices_order += ["edu", "home"]
-
 
     # for choice in choices:
     num_choices = len(choices_order)
@@ -198,27 +195,34 @@ def _construct_sdcorr_indices(choices, occupations):
 
 def construct_shocks_sdcorr(params_occ):
 
-    default_value = params_occ.loc["shocks_sdcorr"]["value"].iloc[0]
-    sd_corr_base = params_occ.loc["shocks_sdcorr"].copy()
+    sd_corr_base = params_occ.loc[("shocks_sdcorr", slice(None)), :].copy()
+    default_value = sd_corr_base.loc["shocks_sdcorr"]["value"].iloc[0]
+
     params_occ.drop("shocks_sdcorr", level="category", inplace=True)
 
     choices, occupations = _get_choices_occupations(params_occ)
 
-    indices = _construct_sdcorr_indices(choices, occupations)
+    indices = _construct_sdcorr_indices(occupations)
     shocks_sdcorr = pd.DataFrame(index=indices, columns=["value", "comment"])
 
-    for index in shocks_sdcorr.index:
-        #if index in sd_corr_base.index:
-        #    access = index, "value"
-        #    shocks_sdcorr.loc[access] = sd_corr_base.loc[access]
+    for category, name in shocks_sdcorr.index:
+        index = (category, name)
 
+        # If the required information is available, we just use that one.
+        if index in sd_corr_base.index:
+            access = index, "value"
+            shocks_sdcorr.loc[access] = sd_corr_base.loc[access]
+            continue
 
-        if "sd_" in index[1]:
-            shocks_sdcorr.loc[index, "value"] = 1.0
-        elif "corr_" in index[1]:
+        # We set any remaining correlations to zero.
+        if "corr_" in name:
             shocks_sdcorr.loc[index, "value"] = 0.0
-        else:
-            raise AssertionError
+            continue
+
+        # We set any remaining standard deviations to the default value.
+        if "sd_" in name:
+            shocks_sdcorr.loc[index, "value"] = default_value
+            continue
 
     params_occ = params_occ.append(shocks_sdcorr)
     params_occ["value"] = params_occ["value"].astype("float")

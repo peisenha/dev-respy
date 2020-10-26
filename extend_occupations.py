@@ -7,6 +7,11 @@ from auxiliary import _get_choices_occupations, update_model_specification
 n_periods = 3
 params, options, data = rp.get_example_model("kw_97_basic")
 
+
+
+
+
+
 for num_occupations in range(1, 5):
     params_occ, options_occ = update_model_specification(params, options, num_occupations)
 

@@ -17,8 +17,7 @@ def test_1():
     simulate = rp.get_simulate_func(params_occ, options)
     df = simulate(params_occ)
 
-    np.testing.assert_equal(df["Choice"].nunique(), 7)
-    np.testing.assert_almost_equal(df.sum().sum(), 36176120320.78306)
+    np.testing.assert_almost_equal(df.sum().sum(), 14022027476.102118)
 
 
 def test_2():
