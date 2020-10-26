@@ -4,21 +4,69 @@ import respy as rp
 
 import string
 # TODO: nonpecs need to be dealt with ..
-# TODO: Types as hard-coded number
 # TODO: Need to add mode complex grid and nonceps.
 
 
-def scaling_model_specification(base_model, num_periods=None, num_occupations=None):
+def scaling_model_specification(base_model, num_periods=None, add_occ=None, add_types=None):
     params, options = rp.get_example_model(base_model, with_data=False)
 
     if num_periods is not None:
         options = _modify_periods(options, num_periods)
 
-    if num_occupations is not None:
-        args = (params, options, num_occupations)
+    if add_occ is not None:
+        args = (params, options, add_occ)
         params, options = _add_occupations(*args)
 
+    if add_types is not None:
+        params = _add_types(params, add_types)
+
     return params, options
+
+
+def _add_types(params_update, add_types):
+
+    choices, occupations = _get_choices_occupations(params_update)
+    non_occupations = list(set(choices).difference(occupations))
+
+    for iter_ in range(add_types):
+        for choice in choices:
+
+            if choice in non_occupations:
+                category = f"nonpec_{choice}"
+            else:
+                category = f"wage_{choice}"
+
+            if _check_is_kw_97(occupations=occupations):
+                name = f"type_{4 + iter_}"
+                if "military" in choice: continue
+                value = params_update.loc[(category, "type_1"), "value"]
+
+            else:
+                name = f"type_{1 + iter_}"
+                value = 0.0
+
+            params_update.loc[(category, name), "value"] = value
+
+    for iter_ in range(add_types):
+
+        if _check_is_kw_97(occupations=occupations):
+            name = f"type_{4 + iter_}"
+            if "military" in choice: continue
+            # Duplicate type 1 composition
+            type_add = params_update.loc[("type_1", slice(None)), :].copy()
+        else:
+            name = f"type_{1 + iter_}"
+            base = {"category": ["type_1"], "name": "constant", "value": 1.0}
+            type_add = pd.DataFrame(base).set_index(["category", "name"])
+
+        # Duplicate type 1 composition
+        type_add.reset_index(inplace=True)
+        type_add.loc[:, "category"] = name
+        type_add.set_index(["category", "name"], inplace=True)
+
+        params_update = params_update.append(type_add)
+
+    return params_update
 
 
 def _modify_periods(options, num_periods):
@@ -26,15 +74,15 @@ def _modify_periods(options, num_periods):
     return options
 
 
-def _add_occupations(params, options, num_occupations):
+def _add_occupations(params, options, add_occupations):
     params_update, options_update = params.copy(), options.copy()
-    params_update = _update_params(params_update, num_occupations)
+    params_update = _update_params(params_update, add_occupations)
     options_update = _update_options(params_update, options_update)
     return params_update, options_update
 
 
-def _update_params(params_update, num_occupations):
-    params_update = _add_generic_occupations(params_update, num_occupations)
+def _update_params(params_update, add_occupations):
+    params_update = _add_generic_occupations(params_update, add_occupations)
     params_update = _construct_shocks_sdcorr(params_update)
     params_update = _construct_meas_error(params_update)
     return params_update
@@ -123,8 +171,8 @@ def _update_covariates(options_update, occupations):
     return options_update
 
 
-def _add_generic_occupations(params_update, num_occupations):
-    letters = string.ascii_lowercase[:num_occupations]
+def _add_generic_occupations(params_update, add_occupations):
+    letters = string.ascii_lowercase[:add_occupations]
 
     _, occupations = _get_choices_occupations(params_update)
 
@@ -155,7 +203,7 @@ def _add_generic_occupations(params_update, num_occupations):
                      "comment": ["comment"],
                 }
                 info = pd.DataFrame.from_dict(info).set_index(["category", "name"])
-                params_debug = params_update.append(info)
+                params_update = params_update.append(info)
 
     params_update = params_update.sort_index()
 

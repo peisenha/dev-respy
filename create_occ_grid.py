@@ -14,6 +14,7 @@ params, options, data = rp.get_example_model("kw_97_extended")
 labels = list()
 labels += ["constant", "exp_school", "exp_white_collar", "exp_white_collar_square"]
 labels += ["exp_blue_collar", "exp_blue_collar_squared", "exp_military"]
+labels += ["type_1", "type_2", "type_3"]
 occ_grid_kw97 = params.loc[(f"wage_white_collar", labels), :].copy()
 
 occ_grid_kw97.reset_index(inplace=True)
