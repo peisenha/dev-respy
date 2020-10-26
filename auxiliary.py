@@ -3,8 +3,6 @@ import numpy as np
 import respy as rp
 
 import string
-# TODO: nonpecs need to be dealt with ..
-# TODO: Need to add mode complex grid and nonceps.
 
 
 def scaling_model_specification(base_model, num_periods=None, add_occ=None, add_types=None):
@@ -14,8 +12,7 @@ def scaling_model_specification(base_model, num_periods=None, add_occ=None, add_
         options = _modify_periods(options, num_periods)
 
     if add_occ is not None:
-        args = (params, options, add_occ)
-        params, options = _add_occupations(*args)
+        params, options = _add_occupations(params, options, add_occ)
 
     if add_types is not None:
         params = _add_types(params, add_types)
@@ -37,29 +34,27 @@ def _add_types(params_update, add_types):
                 category = f"wage_{choice}"
 
             if _check_is_kw_97(occupations=occupations):
-                name = f"type_{4 + iter_}"
-                if "military" in choice: continue
+                if "military" in choice:
+                    continue
                 value = params_update.loc[(category, "type_1"), "value"]
-
+                name = f"type_{4 + iter_}"
             else:
-                name = f"type_{1 + iter_}"
-                value = 0.0
+                name, value = f"type_{1 + iter_}", 0.0
 
             params_update.loc[(category, name), "value"] = value
 
     for iter_ in range(add_types):
 
         if _check_is_kw_97(occupations=occupations):
-            name = f"type_{4 + iter_}"
-            if "military" in choice: continue
-            # Duplicate type 1 composition
+            if "military" in choice:
+                continue
             type_add = params_update.loc[("type_1", slice(None)), :].copy()
+            name = f"type_{4 + iter_}"
         else:
-            name = f"type_{1 + iter_}"
             base = {"category": ["type_1"], "name": "constant", "value": 1.0}
             type_add = pd.DataFrame(base).set_index(["category", "name"])
+            name = f"type_{1 + iter_}"
 
-        # Duplicate type 1 composition
         type_add.reset_index(inplace=True)
         type_add.loc[:, "category"] = name
         type_add.set_index(["category", "name"], inplace=True)
