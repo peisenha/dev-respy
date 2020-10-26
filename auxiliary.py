@@ -5,6 +5,7 @@ import string
 
 
 # TODO: Types as hard-coded number
+# TODO: Need to add mode complex grid and nonceps.
 
 
 def update_model_specification(params, options, num_occupations):
@@ -21,19 +22,31 @@ def update_params(params, num_occupations):
 
 
 def construct_meas_error(params_occ):
-    _, occupations = _get_choices_occupations(params_occ)
 
-    if "meas_error" in params_occ.index.get_level_values("category"):
-        occupations = _get_choices_occupations(params_occ)[1]
+    if "meas_error" not in params_occ.index.get_level_values("category"):
+        return params_occ
 
-        value = params_occ.loc["meas_error"]["value"].iloc[0]
-        params_occ.drop("meas_error", level="category", inplace=True)
+    occupations = _get_choices_occupations(params_occ)[1]
 
-        info_base = {"category": ["meas_error"], "comment": ["..."], "value": value}
-        for occupation in occupations:
-            info_base["name"] = [f"sd_{occupation}"]
-            meas_error = pd.DataFrame.from_dict(info_base).set_index(["category", "name"])
-            params_occ = params_occ.append(meas_error)
+    default_value = params_occ.loc["meas_error"]["value"].iloc[0]
+    meas_error_base = params_occ.loc["meas_error"].copy()
+
+    params_occ.drop("meas_error", level="category", inplace=True)
+
+    info_base = {"category": ["meas_error"], "comment": "..."}
+    for occupation in occupations:
+        name = f"sd_{occupation}"
+
+        if name in meas_error_base.index:
+            value = meas_error_base.loc[name, "value"]
+        else:
+            value = default_value
+        info_base["value"] = value
+
+        info_base["name"] = name
+
+        meas_error = pd.DataFrame.from_dict(info_base).set_index(["category", "name"])
+        params_occ = params_occ.append(meas_error)
 
     return params_occ
 
@@ -43,7 +56,6 @@ def _get_choices_occupations(params):
     for candidate in params.index.get_level_values("category"):
         if "wage" not in candidate and "nonpec" not in candidate:
             continue
-
         choice = candidate.split('_', 1)[1]
         if "wage" in candidate and choice not in occupations:
             occupations.append(choice)
@@ -107,7 +119,6 @@ def add_generic_occupations(params, num_occupations):
 
     occ_grid = pd.read_pickle(f"occ_grid_{model}.pkl")
 
-    # TODO: Need to add mode complex grid and nonceps.
     for letter in letters:
         occ_add = occ_grid.copy()
         occ_add.reset_index(inplace=True)
@@ -136,30 +147,34 @@ def add_generic_occupations(params, num_occupations):
     return params_debug
 
 
-def construct_shocks_sdcorr(params_occ):
+def check_is_kw_97(**kwargs):
+    if "params" in kwargs:
+        occupations = _get_choices_occupations(kwargs["params"])[1]
+        if "military" in occupations:
+            return True
+        else:
+            return False
+    elif "occupations" in kwargs:
+        if "military" in kwargs["occupations"]:
+            return True
+        else:
+            return False
 
-    params_occ.drop("shocks_sdcorr", level="category", inplace=True)
 
-    choices, occupations = _get_choices_occupations(params_occ)
+def _construct_sdcorr_indices(choices, occupations):
 
+
+
+    # We need to ensure a particular order in the entries to shock matrix.
     choices_order = occupations
-    for choice in choices:
-        if choice in choices_order:
-            continue
-        if choice in ["school", "home", "edu"]:
-            continue
-
-        choices_order.append(choice)
-
-    if "military" in occupations:
-        choices_order.append("school")
+    if check_is_kw_97(occupations=occupations):
+        choices_order += ["school", "home"]
     else:
-        choices_order.append("edu")
+        choices_order += ["edu", "home"]
 
-    choices_order.append("home")
 
-    print(choices_order)
-    num_choices = len(choices)
+    # for choice in choices:
+    num_choices = len(choices_order)
     cov = np.tile("a" * 30, (num_choices, num_choices))
 
     for i, row in enumerate(choices_order):
@@ -178,7 +193,19 @@ def construct_shocks_sdcorr(params_occ):
         indices += [("shocks_sdcorr", name)]
 
     index = pd.MultiIndex.from_tuples(indices, names=["category", "name"])
-    shocks_sdcorr = pd.DataFrame(index=index, columns=["value", "comment"])
+    return index
+
+
+def construct_shocks_sdcorr(params_occ):
+
+    default_value = params_occ.loc["shocks_sdcorr"]["value"].iloc[0]
+    sd_corr_base = params_occ.loc["shocks_sdcorr"].copy()
+    params_occ.drop("shocks_sdcorr", level="category", inplace=True)
+
+    choices, occupations = _get_choices_occupations(params_occ)
+
+    indices = _construct_sdcorr_indices(choices, occupations)
+    shocks_sdcorr = pd.DataFrame(index=indices, columns=["value", "comment"])
 
     for category, name in shocks_sdcorr.index:
         if "sd_" in name:
