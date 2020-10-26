@@ -208,6 +208,11 @@ def construct_shocks_sdcorr(params_occ):
     shocks_sdcorr = pd.DataFrame(index=indices, columns=["value", "comment"])
 
     for index in shocks_sdcorr.index:
+        #if index in sd_corr_base.index:
+        #    access = index, "value"
+        #    shocks_sdcorr.loc[access] = sd_corr_base.loc[access]
+
+
         if "sd_" in index[1]:
             shocks_sdcorr.loc[index, "value"] = 1.0
         elif "corr_" in index[1]:
