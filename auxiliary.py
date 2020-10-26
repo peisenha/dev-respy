@@ -4,21 +4,25 @@ import numpy as np
 import string
 
 
-# TODO: Types as hard-coded number
-# TODO: Need to add mode complex grid and nonceps.
-
-
 def update_model_specification(params, options, num_occupations):
-    params_occ = update_params(params, num_occupations)
-    options_occ = update_options(options, params_occ)
-    return params_occ, options_occ
+    params_update, options_update = params.copy(), options.copy()
+    params_update = update_params(params_update, num_occupations)
+    options_update = update_options(options_update, params_update)
+    return params_update, options_update
 
 
-def update_params(params, num_occupations):
-    params_occ = add_generic_occupations(params, num_occupations)
-    params_occ = construct_shocks_sdcorr(params_occ)
-    params_occ = construct_meas_error(params_occ)
-    return params_occ
+def update_params(params_update, num_occupations):
+    params_update = add_generic_occupations(params_update, num_occupations)
+    params_update = construct_shocks_sdcorr(params_update)
+    params_update = construct_meas_error(params_update)
+    return params_update
+
+
+def update_options(options_update, params_update):
+    _, occupations = _get_choices_occupations(params_update)
+    options_update = update_core_state_space_filters(options_update, occupations)
+    options_update = update_covariates(options_update, occupations)
+    return options_update
 
 
 def construct_meas_error(params_occ):
@@ -68,21 +72,17 @@ def _get_choices_occupations(params):
     return choices, occupations
 
 
-def update_options(options, params_occ):
-    # TODO: Updating filters ...
-    _, occupations = _get_choices_occupations(params_occ)
+def update_core_state_space_filters(options, occupations):
     substring = ""
     for occupation in occupations:
         substring += f"exp_{occupation} + "
 
-    # There is a different naming between the models.
-
+    # We need to update the state space filters.
     substring = substring[:substring.rfind("+") - 1]
-    if "exp_edu" in params_occ.index.get_level_values("name"):
-        substring = f"period > 0 and {substring} + exp_edu == period "
-    else:
+    if check_is_kw_97(occupations=occupations):
         substring = f"period > 0 and {substring} + exp_school == period "
-
+    else:
+        substring = f"period > 0 and {substring} + exp_edu == period "
     substring += "and lagged_choice_1 == '{choices_wo_exp}'"
 
     try:
@@ -90,6 +90,10 @@ def update_options(options, params_occ):
     except KeyError:
         pass
 
+    return options
+
+
+def update_covariates(options, occupations):
     # TODO: Updating covariates ...
     entries_to_remove = list()
     for key_ in options["covariates"].keys():
@@ -98,8 +102,6 @@ def update_options(options, params_occ):
 
     for key_ in entries_to_remove:
         options["covariates"].pop(key_, None)
-
-    choices, occupations = _get_choices_occupations(params_occ)
 
     for occupation in occupations:
         options["covariates"][f"exp_{occupation}_square"] = f"exp_{occupation} ** 2"
