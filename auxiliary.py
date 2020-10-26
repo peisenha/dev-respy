@@ -4,6 +4,9 @@ import numpy as np
 import string
 
 
+# TODO: Types as hard-coded number
+
+
 def update_model_specification(params, options, num_occupations):
     params_occ = update_params(params, num_occupations)
     options_occ = update_options(options, params_occ)
@@ -21,21 +24,15 @@ def construct_meas_error(params_occ):
     _, occupations = _get_choices_occupations(params_occ)
 
     if "meas_error" in params_occ.index.get_level_values("category"):
-        _, occupations = _get_choices_occupations(params_occ)
+        occupations = _get_choices_occupations(params_occ)[1]
 
+        value = params_occ.loc["meas_error"]["value"].iloc[0]
         params_occ.drop("meas_error", level="category", inplace=True)
 
-        # TODO: Remove hard-coded number
-        # TODO: Types as hard-coded number
-        # TODO: Removes any experience as well?
+        info_base = {"category": ["meas_error"], "comment": ["..."], "value": value}
         for occupation in occupations:
-            info = {
-                "category": ["meas_error"],
-                "name": [f"sd_{occupation}"],
-                "value": [1.0],
-                "comment": ["comment"],
-            }
-            meas_error = pd.DataFrame.from_dict(info).set_index(["category", "name"])
+            info_base["name"] = [f"sd_{occupation}"]
+            meas_error = pd.DataFrame.from_dict(info_base).set_index(["category", "name"])
             params_occ = params_occ.append(meas_error)
 
     return params_occ
