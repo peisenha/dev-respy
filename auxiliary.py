@@ -207,11 +207,11 @@ def construct_shocks_sdcorr(params_occ):
     indices = _construct_sdcorr_indices(choices, occupations)
     shocks_sdcorr = pd.DataFrame(index=indices, columns=["value", "comment"])
 
-    for category, name in shocks_sdcorr.index:
-        if "sd_" in name:
-            shocks_sdcorr.loc[(category, name), "value"] = 1.0
-        elif "corr_" in name:
-            shocks_sdcorr.loc[(category, name), "value"] = 0.0
+    for index in shocks_sdcorr.index:
+        if "sd_" in index[1]:
+            shocks_sdcorr.loc[index, "value"] = 1.0
+        elif "corr_" in index[1]:
+            shocks_sdcorr.loc[index, "value"] = 0.0
         else:
             raise AssertionError
 
