@@ -12,15 +12,18 @@ def scaling_model_specification(base_model, num_periods=None, num_occupations=No
     params, options = rp.get_example_model(base_model, with_data=False)
 
     if num_periods is not None:
-        options["n_periods"] = num_periods
-    else:
-        pass
+        options = _modify_periods(options, num_periods)
 
     if num_occupations is not None:
         args = (params, options, num_occupations)
         params, options = _add_occupations(*args)
 
     return params, options
+
+
+def _modify_periods(options, num_periods):
+    options["n_periods"] = num_periods
+    return options
 
 
 def _add_occupations(params, options, num_occupations):
