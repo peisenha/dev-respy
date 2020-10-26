@@ -1,41 +1,60 @@
 import pandas as pd
 import numpy as np
+import respy as rp
 
 import string
+# TODO: nonpecs need to be dealt with ..
+# TODO: Types as hard-coded number
+# TODO: Need to add mode complex grid and nonceps.
 
 
-def update_model_specification(params, options, num_occupations):
+def scaling_model_specification(base_model, num_periods=None, num_occupations=None):
+    params, options = rp.get_example_model(base_model, with_data=False)
+
+    if num_periods is not None:
+        options["n_periods"] = num_periods
+    else:
+        pass
+
+    if num_occupations is not None:
+        args = (params, options, num_occupations)
+        params, options = _add_occupations(*args)
+
+    return params, options
+
+
+def _add_occupations(params, options, num_occupations):
     params_update, options_update = params.copy(), options.copy()
-    params_update = update_params(params_update, num_occupations)
-    options_update = update_options(options_update, params_update)
+    params_update = _update_params(params_update, num_occupations)
+    options_update = _update_options(params_update, options_update)
     return params_update, options_update
 
 
-def update_params(params_update, num_occupations):
-    params_update = add_generic_occupations(params_update, num_occupations)
-    params_update = construct_shocks_sdcorr(params_update)
-    params_update = construct_meas_error(params_update)
+def _update_params(params_update, num_occupations):
+    params_update = _add_generic_occupations(params_update, num_occupations)
+    params_update = _construct_shocks_sdcorr(params_update)
+    params_update = _construct_meas_error(params_update)
     return params_update
 
 
-def update_options(options_update, params_update):
+def _update_options(params_update, options_update):
     _, occupations = _get_choices_occupations(params_update)
-    options_update = update_core_state_space_filters(options_update, occupations)
-    options_update = update_covariates(options_update, occupations)
+    options_update = _update_core_state_space_filters(options_update, occupations)
+    options_update = _update_covariates(options_update, occupations)
     return options_update
 
 
-def construct_meas_error(params_occ):
+def _construct_meas_error(params_update):
 
-    if "meas_error" not in params_occ.index.get_level_values("category"):
-        return params_occ
+    if "meas_error" not in params_update.index.get_level_values("category"):
+        return params_update
 
-    occupations = _get_choices_occupations(params_occ)[1]
+    occupations = _get_choices_occupations(params_update)[1]
 
-    default_value = params_occ.loc["meas_error"]["value"].iloc[0]
-    meas_error_base = params_occ.loc["meas_error"].copy()
+    default_value = params_update.loc["meas_error"]["value"].iloc[0]
+    meas_error_base = params_update.loc["meas_error"].copy()
 
-    params_occ.drop("meas_error", level="category", inplace=True)
+    params_update.drop("meas_error", level="category", inplace=True)
 
     info_base = {"category": ["meas_error"], "comment": "..."}
     for occupation in occupations:
@@ -50,14 +69,14 @@ def construct_meas_error(params_occ):
         info_base["name"] = name
 
         meas_error = pd.DataFrame.from_dict(info_base).set_index(["category", "name"])
-        params_occ = params_occ.append(meas_error)
+        params_update = params_update.append(meas_error)
 
-    return params_occ
+    return params_update
 
 
-def _get_choices_occupations(params):
+def _get_choices_occupations(params_update):
     choices, occupations = list(), list()
-    for candidate in params.index.get_level_values("category"):
+    for candidate in params_update.index.get_level_values("category"):
         if "wage" not in candidate and "nonpec" not in candidate:
             continue
         choice = candidate.split('_', 1)[1]
@@ -72,11 +91,11 @@ def _get_choices_occupations(params):
     return choices, occupations
 
 
-def update_core_state_space_filters(options, occupations):
+def _update_core_state_space_filters(options_update, occupations):
     substring = ''.join([f"exp_{occupation} + " for occupation in occupations])
     substring = substring[:substring.rfind("+") - 1]
     substring = f"period > 0 and {substring}"
-    if check_is_kw_97(occupations=occupations):
+    if _check_is_kw_97(occupations=occupations):
         substring += " + exp_school == period "
     else:
         substring += f" + exp_edu == period "
@@ -84,24 +103,24 @@ def update_core_state_space_filters(options, occupations):
 
     # TODO: For some reason there are no state space filters defined in the basic model.
     try:
-        options["core_state_space_filters"][1] = substring
+        options_update["core_state_space_filters"][1] = substring
     except KeyError:
         pass
 
-    return options
+    return options_update
 
 
-def update_covariates(options, occupations):
+def _update_covariates(options_update, occupations):
     for occupation in occupations:
         key_ = f"exp_{occupation}_square"
-        if key_ in options["covariates"].keys():
+        if key_ in options_update["covariates"].keys():
             continue
-        options["covariates"][key_] = f"exp_{occupation} ** 2"
+        options_update["covariates"][key_] = f"exp_{occupation} ** 2"
 
-    return options
+    return options_update
 
 
-def add_generic_occupations(params_update, num_occupations):
+def _add_generic_occupations(params_update, num_occupations):
     letters = string.ascii_lowercase[:num_occupations]
 
     _, occupations = _get_choices_occupations(params_update)
@@ -140,7 +159,7 @@ def add_generic_occupations(params_update, num_occupations):
     return params_update
 
 
-def check_is_kw_97(**kwargs):
+def _check_is_kw_97(**kwargs):
     if "params" in kwargs:
         _, occupations = _get_choices_occupations(kwargs["params"])
         if "military" in occupations:
@@ -158,7 +177,7 @@ def _construct_sdcorr_indices(occupations):
 
     # We need to ensure a particular order in the entries to shock matrix.
     choices_order = occupations
-    if check_is_kw_97(occupations=occupations):
+    if _check_is_kw_97(occupations=occupations):
         choices_order += ["school", "home"]
     else:
         choices_order += ["edu", "home"]
@@ -186,14 +205,14 @@ def _construct_sdcorr_indices(occupations):
     return index
 
 
-def construct_shocks_sdcorr(params_occ):
+def _construct_shocks_sdcorr(params_update):
 
-    sd_corr_base = params_occ.loc[("shocks_sdcorr", slice(None)), :].copy()
+    sd_corr_base = params_update.loc[("shocks_sdcorr", slice(None)), :].copy()
     default_value = sd_corr_base.loc["shocks_sdcorr"]["value"].iloc[0]
 
-    params_occ.drop("shocks_sdcorr", level="category", inplace=True)
+    params_update.drop("shocks_sdcorr", level="category", inplace=True)
 
-    choices, occupations = _get_choices_occupations(params_occ)
+    choices, occupations = _get_choices_occupations(params_update)
 
     indices = _construct_sdcorr_indices(occupations)
     shocks_sdcorr = pd.DataFrame(index=indices, columns=["value", "comment"])
@@ -217,8 +236,8 @@ def construct_shocks_sdcorr(params_occ):
             shocks_sdcorr.loc[index, "value"] = default_value
             continue
 
-    params_occ = params_occ.append(shocks_sdcorr)
-    params_occ["value"] = params_occ["value"].astype("float")
+    params_update = params_update.append(shocks_sdcorr)
+    params_update["value"] = params_update["value"].astype("float")
 
-    return params_occ
+    return params_update
 
