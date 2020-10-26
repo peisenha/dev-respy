@@ -73,18 +73,16 @@ def _get_choices_occupations(params):
 
 
 def update_core_state_space_filters(options, occupations):
-    substring = ""
-    for occupation in occupations:
-        substring += f"exp_{occupation} + "
-
-    # We need to update the state space filters.
+    substring = ''.join([f"exp_{occupation} + " for occupation in occupations])
     substring = substring[:substring.rfind("+") - 1]
+    substring = f"period > 0 and {substring}"
     if check_is_kw_97(occupations=occupations):
-        substring = f"period > 0 and {substring} + exp_school == period "
+        substring += " + exp_school == period "
     else:
-        substring = f"period > 0 and {substring} + exp_edu == period "
+        substring += f" + exp_edu == period "
     substring += "and lagged_choice_1 == '{choices_wo_exp}'"
 
+    # TODO: For some reason there are no state space filters defined in the basic model.
     try:
         options["core_state_space_filters"][1] = substring
     except KeyError:
@@ -94,26 +92,19 @@ def update_core_state_space_filters(options, occupations):
 
 
 def update_covariates(options, occupations):
-    # TODO: Updating covariates ...
-    entries_to_remove = list()
-    for key_ in options["covariates"].keys():
-        if key_.startswith("exp_"):
-            entries_to_remove.append(key_)
-
-    for key_ in entries_to_remove:
-        options["covariates"].pop(key_, None)
-
     for occupation in occupations:
-        options["covariates"][f"exp_{occupation}_square"] = f"exp_{occupation} ** 2"
+        key_ = f"exp_{occupation}_square"
+        if key_ in options["covariates"].keys():
+            continue
+        options["covariates"][key_] = f"exp_{occupation} ** 2"
 
     return options
 
 
-def add_generic_occupations(params, num_occupations):
+def add_generic_occupations(params_update, num_occupations):
     letters = string.ascii_lowercase[:num_occupations]
-    params_debug = params.copy()
 
-    _, occupations = _get_choices_occupations(params)
+    _, occupations = _get_choices_occupations(params_update)
 
     model = "kw_94"
     if "military" in occupations:
@@ -126,9 +117,9 @@ def add_generic_occupations(params, num_occupations):
         occ_add.reset_index(inplace=True)
         occ_add.loc[:, "category"] = f"wage_{letter}{letter}"
         occ_add.set_index(["category", "name"], inplace=True)
-        params_debug = params_debug.append(occ_add)
+        params_update = params_update.append(occ_add)
 
-    _, occupations_update = _get_choices_occupations(params_debug)
+    _, occupations_update = _get_choices_occupations(params_update)
 
     for letter in letters:
         for occupation in occupations_update:
@@ -142,11 +133,11 @@ def add_generic_occupations(params, num_occupations):
                      "comment": ["comment"],
                 }
                 info = pd.DataFrame.from_dict(info).set_index(["category", "name"])
-                params_debug = params_debug.append(info)
+                params_debug = params_update.append(info)
 
-    params_debug = params_debug.sort_index()
+    params_update = params_update.sort_index()
 
-    return params_debug
+    return params_update
 
 
 def check_is_kw_97(**kwargs):
